@@ -19,11 +19,6 @@ class EnsimeGenerator(props: MakerProps) {
       writer.append("  :cache-dir \"" + root.getAbsolutePath + "ensime_cache\"\n")
       writer.append("  :name \"" + name + "\"\n")
 
-      // Scala library is shared between all modules
-      writer.append("  :compile-deps (\n")
-      writer.append("    \"" + props.ProjectScalaLibraryJar().getAbsolutePath + "\"\n")
-      writer.append("  )\n")
-
       // Java and Scala sources are shared between all modules
       writer.append("  :reference-source-roots (\n")
       writer.append("    \"" + new File(props.JavaHome(), "src.zip").getAbsolutePath + "\"\n")
@@ -53,6 +48,8 @@ class EnsimeGenerator(props: MakerProps) {
     writer.append("      )\n")
 
     writer.append("      :compile-deps (\n")
+    // Scala library is shared between all modules
+    writer.append("        \"" + props.ProjectScalaLibraryJar().getAbsolutePath + "\"\n")
     def appendDeps(m: Module): Unit = {
       // hack: avoid duplicates already pulled in by upstream
       def got(m: Module): List[String] =
